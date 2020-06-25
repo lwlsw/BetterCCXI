@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleName</key>
-	<string>Weather iOS 13 (BetterCCXI)</string>
+	<string>Weather iOS 12 (BetterCCXI)</string>
 	<key>CFBundleExecutable</key>
 	<string>BCIXWeatherModule</string>
 	<key>CFBundleIdentifier</key>

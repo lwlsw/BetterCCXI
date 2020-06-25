@@ -21,4 +21,6 @@ after-install::
 
 SUBPROJECTS += Settings
 SUBPROJECTS += weathermodule11
+SUBPROJECTS += weathermodule12
+SUBPROJECTS += weathermodule
 include $(THEOS_MAKE_PATH)/aggregate.mk

@@ -2,16 +2,6 @@
 #import <WeatherUI/WUIDynamicWeatherBackground.h>
 #import <UIKit/UIView+Private2.h>
 
-@interface CCUIContentModuleContentContainerView : UIView
-@property (assign,nonatomic) double compactContinuousCornerRadius;
-@property (assign,nonatomic) double expandedContinuousCornerRadius;
-@end
-
-@interface CCUIContentModuleContainerViewController : UIViewController
-@property (nonatomic,readonly) CCUIContentModuleContentContainerView * moduleContentView;
--(BOOL)isExpanded;
-@end
-
 @interface WATodayHeaderView ()
 @property (nonatomic, assign) BOOL isBCIWeatherView;
 @end
@@ -118,9 +108,23 @@ static BOOL hasWeatherBG = NO;
 		[(WUIDynamicWeatherBackground *)_weatherView animateTransitionToSize:self.view.bounds.size];
 		[self.view sendSubviewToBack:_weatherView];
 		_weatherView.clipsToBounds = YES;
-		CCUIContentModuleContainerViewController  *parentViewController = (CCUIContentModuleContainerViewController *)self.parentViewController;
-		if (parentViewController) {
-			_weatherView.layer.cornerRadius = parentViewController.moduleContentView.compactContinuousCornerRadius;
+		UIView *superview = [self.view superview];
+		if (superview) {
+			NSArray<UIView *> *topSubviews = [superview subviews];
+			if (topSubviews) {
+				for (UIView *topSub in topSubviews) {
+					if ([topSub isKindOfClass:NSClassFromString(@"MTMaterialView")]) {
+						NSArray<UIView *> *subviews = [topSub subviews];
+						if (subviews) {
+							for (UIView *subview in subviews) {
+								if ([subview isKindOfClass:NSClassFromString(@"_MTBackdropView")]) {
+									_weatherView._continuousCornerRadius = subview._continuousCornerRadius;
+								}
+							}
+						}
+					}
+				}
+			}
 		}
 	}
 	if (_platterController) {
@@ -144,14 +148,6 @@ static BOOL hasWeatherBG = NO;
 		if (_platterController.headerView && _platterController.headerView.isBCIWeatherView != YES) {
 			_platterController.headerView.isBCIWeatherView = YES;
 			[_platterController.headerView _updateContent];
-		}
-
-		CCUIContentModuleContainerViewController  *parentViewController = (CCUIContentModuleContainerViewController *)self.parentViewController;
-		BOOL expanded = [parentViewController isExpanded];
-		if (expanded) {
-			_weatherView.layer.cornerRadius = parentViewController.moduleContentView.expandedContinuousCornerRadius;
-		} else {
-			_weatherView.layer.cornerRadius = parentViewController.moduleContentView.compactContinuousCornerRadius;
 		}
 		NSArray<UIView *> *mainSubviews = [_platterController.view subviews];
 		if (mainSubviews) {

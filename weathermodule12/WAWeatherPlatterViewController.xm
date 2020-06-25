@@ -3,7 +3,6 @@
 @interface WAWeatherPlatterViewController ()
 @property (nonatomic, assign) BOOL isBCIWeatherView;
 @property (nonatomic, retain) UIView *dividerView;
-@property (nonatomic, retain) UIView * backgroundView;
 @end
 
 @interface UIColor ()
@@ -212,7 +211,6 @@ static BOOL hasWeatherBG = NO;
 
 - (void)viewWillLayoutSubviews {
 	%orig;
-	self.backgroundView.hidden = YES;
 	if (self.isBCIWeatherView) {
 
 		if (self.dividerLineView) {
